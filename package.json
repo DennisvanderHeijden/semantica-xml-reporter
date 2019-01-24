@@ -1,8 +1,15 @@
 {
-  "name": "semantica-xml-reporter",
-  "version": "1.0.0",
+  "name": "newman-reporter-d-man",
+  "version": "1.0.13",
   "description": "A newman reporter for devops",
   "main": "index.js",
+  "dependencies": {
+    "filesize": "3.6.1",
+    "lodash": "4.17.11",
+    "parse-json": "4.0.0",
+    "postman-request": "2.88.1-postman.5-beta.1",
+    "xmlbuilder": "10.1.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

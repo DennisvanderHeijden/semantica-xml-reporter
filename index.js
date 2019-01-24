@@ -1,7 +1,19 @@
 var _ = require('lodash'),
     xml = require('xmlbuilder'),
 
-    util = require('../../util'),
+    util = {
+        getFullName: function (item, separator) {
+            if (_.isEmpty(item) || !_.isFunction(item.parent) || !_.isFunction(item.forEachParent)) { return; }
+
+            var chain = [];
+
+            item.forEachParent(function (parent) { chain.unshift(parent.name || parent.id); });
+
+            item.parent() && chain.push(item.name || item.id); // Add the current item only if it is not the collection
+
+            return chain.join(_.isString(separator) ? separator : ' / ');
+        }
+    },
     DmanReporter;
 
 /**
@@ -94,7 +106,7 @@ DmanReporter = function (newman, reporterOptions) {
                         ++failures;
                         (_.isArray(tests[name]) ? tests[name].push(err) : (tests[name] = [err]));
                     }
-                    else {
+                    else if(!tests[name]) {
                         tests[name] = [];
                     }
                 });
@@ -117,7 +129,7 @@ DmanReporter = function (newman, reporterOptions) {
             })).toFixed(3));
             errorMessages && suite.ele('error').dat(errorMessages);
 
-            _.forEach(tests, function (failures, name) {
+            _.forOwn(tests, function (failures, name) {
                 var testcase = suite.ele('testcase'),
                     failure;
 
@@ -134,7 +146,7 @@ DmanReporter = function (newman, reporterOptions) {
                     failure.dat('Collection name: ' + collection.name + '.');
                     failure.dat('Request name: ' + util.getFullName(currentItem) + '.');
                     failure.dat('Test description: ' + name + '.');
-                    if (failures.length !== 0) {
+                    if (failures.length !== 0) {                        
                         failure.att('message', failures[0].message);
                         failure.dat('Error message: ' + failures[0].message + '.');
                         failure.dat('Stacktrace: ' + failures[0].stack + '.');
@@ -145,8 +157,8 @@ DmanReporter = function (newman, reporterOptions) {
 
         root.att('time', testSuitesExecutionTime.toFixed(3));
         newman.exports.push({
-            name: 'junit-reporter',
-            default: 'newman-run-report.xml',
+            name: 'newman-reporter-dman',
+            default: 'newman-run-report-dman.xml',
             path: reporterOptions.export,
             content: root.end({
                 pretty: true,
