@@ -1,0 +1,19 @@
+{
+  "name": "semantica-xml-reporter",
+  "version": "1.0.0",
+  "description": "A newman reporter for devops",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DennisvanderHeijden/semantica-xml-reporter.git"
+  },
+  "author": "Dennis <dennis@semantica.nl> (https://www.semantica.nl)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DennisvanderHeijden/semantica-xml-reporter/issues"
+  },
+  "homepage": "https://github.com/DennisvanderHeijden/semantica-xml-reporter#readme"
+}
